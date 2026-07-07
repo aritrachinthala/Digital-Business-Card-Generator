@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun Digital Business Card Generator</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#74ebd5,#9face6);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:30px;
+    justify-content:center;
+}
+
+.form{
+    background:#fff;
+    padding:20px;
+    width:320px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,.2);
+}
+
+.form h2{
+    text-align:center;
+    margin-bottom:15px;
+    color:#333;
+}
+
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+button{
+    background:#4CAF50;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.03);
+    background:#2e7d32;
+}
+
+.card{
+    width:350px;
+    height:220px;
+    border-radius:20px;
+    padding:20px;
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,.3);
+    transition:.4s;
+}
+
+.card:hover{
+    transform:rotate(-2deg) scale(1.03);
+}
+
+.card img{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:4px solid white;
+    object-fit:cover;
+}
+
+.info{
+    flex:1;
+}
+
+.info h2{
+    margin-bottom:5px;
+}
+
+.info p{
+    margin:4px 0;
+    font-size:14px;
+}
+
+.info a{
+    color:white;
+    text-decoration:none;
+    display:block;
+    margin-top:4px;
+}
+
+.blue{background:#2196F3;}
+.green{background:#4CAF50;}
+.purple{background:#9C27B0;}
+.dark{background:#333;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="form">
+
+<h2>🎨 Business Card Creator</h2>
+
+<input type="text" id="name" placeholder="Your Name">
+
+<input type="text" id="job" placeholder="Profession">
+
+<input type="text" id="phone" placeholder="Phone">
+
+<input type="email" id="email" placeholder="Email">
+
+<input type="text" id="website" placeholder="Website">
+
+<input type="text" id="linkedin" placeholder="LinkedIn">
+
+<input type="text" id="github" placeholder="GitHub">
+
+<input type="file" id="image">
+
+<label>Choose Template</label>
+<select id="template">
+<option value="blue">💙 Blue</option>
+<option value="green">💚 Green</option>
+<option value="purple">💜 Purple</option>
+<option value="dark">🖤 Dark</option>
+</select>
+
+<label>Background Color</label>
+<input type="color" id="bgColor" value="#2196F3">
+
+<label>Border Color</label>
+<input type="color" id="borderColor" value="#ffffff">
+
+<label>Border Style</label>
+<select id="borderStyle">
+<option>solid</option>
+<option>dashed</option>
+<option>dotted</option>
+<option>double</option>
+</select>
+
+<label>Round Corners</label>
+<input type="range" id="radius" min="0" max="40" value="20">
+
+<button onclick="generateCard()">✨ Generate Card</button>
+
+<button onclick="randomColor()">🎲 Surprise Me!</button>
+
+<button onclick="downloadImage()">📷 Download Image</button>
+
+<button onclick="downloadPDF()">📄 Download PDF</button>
+
+</div>
+
+<div id="card" class="card blue">
+
+<img id="profile" src="https://via.placeholder.com/90">
+
+<div class="info">
+
+<h2 id="cardName">Your Name</h2>
+
+<p id="cardJob">Profession</p>
+
+<p id="cardPhone">📞 Phone</p>
+
+<p id="cardEmail">📧 Email</p>
+
+<p id="cardWebsite">🌐 Website</p>
+
+<a id="cardLinkedin" href="#" target="_blank">🔗 LinkedIn</a>
+
+<a id="cardGithub" href="#" target="_blank">💻 GitHub</a>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function generateCard(){
+
+cardName.innerHTML=name.value;
+cardJob.innerHTML=job.value;
+cardPhone.innerHTML="📞 "+phone.value;
+cardEmail.innerHTML="📧 "+email.value;
+cardWebsite.innerHTML="🌐 "+website.value;
+
+cardLinkedin.href=linkedin.value;
+cardGithub.href=github.value;
+
+card.className="card "+template.value;
+
+card.style.background=bgColor.value;
+card.style.border="5px "+borderStyle.value+" "+borderColor.value;
+card.style.borderRadius=radius.value+"px";
+
+let file=image.files[0];
+
+if(file){
+let reader=new FileReader();
+
+reader.onload=function(e){
+profile.src=e.target.result;
+}
+
+reader.readAsDataURL(file);
+}
+
+}
+
+function randomColor(){
+
+const colors=[
+"#ff6b6b",
+"#6c5ce7",
+"#00b894",
+"#fdcb6e",
+"#e84393",
+"#0984e3",
+"#2d3436",
+"#1abc9c"
+];
+
+card.style.background=colors[Math.floor(Math.random()*colors.length)];
+
+}
+
+function downloadImage(){
+
+html2canvas(card).then(canvas=>{
+
+let link=document.createElement("a");
+
+link.download="BusinessCard.png";
+
+link.href=canvas.toDataURL();
+
+link.click();
+
+});
+
+}
+
+async function downloadPDF(){
+
+const {jsPDF}=window.jspdf;
+
+html2canvas(card).then(canvas=>{
+
+let pdf=new jsPDF();
+
+let img=canvas.toDataURL("image/png");
+
+pdf.addImage(img,"PNG",10,10,180,110);
+
+pdf.save("BusinessCard.pdf");
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
