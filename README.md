@@ -1,6 +1,4 @@
 # Digital-Business-Card-Generator
-# Digital Business Card Generator
-
 A simple frontend application built using HTML, CSS, and JavaScript.
 
 ## Features
